@@ -4,15 +4,22 @@
 Instrument* create_instrument(){
     Instrument* instrument = (Instrument*) malloc(sizeof(Instrument));
     instrument->volume = 1;
+    instrument->LP_buffer_tracker = 0;
     instrument->active_voices = 0;
     instrument->attack = 1;
     instrument->decay = 20000;
     instrument->sustain = 0.7f;
     instrument->release = 5000;
     instrument->pitch_bend = 0.f;
+    instrument->LP_coeff[0] = 0.5f;
+    instrument->LP_coeff[1] = 0.3f;
+    instrument->LP_coeff[2] = 0.8f;
     int i;
     for(i=0;i<16;i++){
         instrument->voices[i].on = 0;
+    }
+    for(i=0;i<LP_SIZE;i++){
+        instrument->LP_buffer[i] = 0;
     }
     return instrument;
 }
@@ -49,13 +56,19 @@ float instrument_render(Instrument* in, int time){
             }
         }
 
-
         out += adsr_modifier*in->voices[i].volume*( 0.5f*osc_sin(in->voices[i].pitch+in->pitch_bend-12,time)+0.5f*(0.98f*osc_squ(in->voices[i].pitch+in->pitch_bend, time) /*+ 0.02f*osc_sin(in->voices[i].pitch+in->pitch_bend+10,time)*/)   );
 
-
-
     }
-    return out;
+    in->LP_buffer[in->LP_buffer_tracker] = out;
+    float y = 0;
+    int k;
+    for(k=0;k<LP_SIZE;k++){
+        y += in->LP_coeff[k] * in->LP_buffer[(in->LP_buffer_tracker+k)%LP_SIZE];
+    }
+    in->LP_buffer_tracker = (in->LP_buffer_tracker+1)%LP_SIZE;
+
+
+    return y;
 }
 
 void instrument_note_on(Instrument* in, int pitch, float volume){

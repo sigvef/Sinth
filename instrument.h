@@ -1,12 +1,17 @@
 #ifndef INSTRUMENT_H
 #define INSTRUMENT_H
 
+#define LP_SIZE 8
+
 #include "voice.h"
 
 
 typedef struct{
     float volume;
     Voice voices[16];
+    float LP_buffer[LP_SIZE];
+    int LP_buffer_tracker;
+    float LP_coeff[3];
     int active_voices;
     int attack;
     int decay;
