@@ -20,7 +20,7 @@ short mixer_render(Mixer* m, int time){
     for(i=0;i<m->number_of_instruments;i++){
         out += instrument_render(m->instruments[i], time);
     }
-    short return_value = (short)((sizeof(short)*8.f)/2.f+m->volume*(2<<(sizeof(short)*8))*out);
+    short return_value = m->volume*(2<<(sizeof(short)*8))*out;
     /*
     short reverb_value = 0;
     reverb_value += 0.2f*m->reverb_buffer[abs(m->reverb_buffer_tracker-1447)%44100];
