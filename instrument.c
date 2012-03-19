@@ -7,8 +7,8 @@ Instrument* create_instrument(){
     instrument->active_voices = 0;
     instrument->attack = 1;
     instrument->decay = 20000;
-    instrument->sustain = 0.6f;
-    instrument->release = 3000;
+    instrument->sustain = 0.7f;
+    instrument->release = 5000;
     instrument->pitch_bend = 0.f;
     int i;
     for(i=0;i<16;i++){
@@ -50,7 +50,7 @@ float instrument_render(Instrument* in, int time){
         }
 
 
-        out += adsr_modifier*in->voices[i].volume*osc_squ(in->voices[i].pitch+in->pitch_bend, time);
+        out += adsr_modifier*in->voices[i].volume*( 0.5f*osc_sin(in->voices[i].pitch+in->pitch_bend-12,time)+0.5f*(0.98f*osc_squ(in->voices[i].pitch+in->pitch_bend, time) /*+ 0.02f*osc_sin(in->voices[i].pitch+in->pitch_bend+10,time)*/)   );
 
 
 

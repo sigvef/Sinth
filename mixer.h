@@ -7,6 +7,8 @@ typedef struct{
     float volume;
     Instrument* instruments[16];
     int number_of_instruments;
+    short reverb_buffer[44100];
+    int reverb_buffer_tracker;
 } Mixer;
 
 Mixer* create_mixer();

@@ -44,6 +44,7 @@ void fill_audio(void *data,Uint8 *stream,int len)
 
 		t+=2;
     }
+
 }
 
 //Open the audio device to what we want
