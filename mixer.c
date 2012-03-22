@@ -40,6 +40,8 @@ short mixer_render(Mixer* m, int time){
     return_value += 0.1f*m->reverb_buffer[(m->reverb_buffer_tracker+44100+1 - 3581)%44100];
     return_value += 0.1f*m->reverb_buffer[(m->reverb_buffer_tracker+44100+1 - 5449)%44100];
     */
+
+
     return_value += 0.1f*m->reverb_buffer[(m->reverb_buffer_tracker+44100+1 - 7001)%44100];
     return_value += 0.1f*m->reverb_buffer[(m->reverb_buffer_tracker+44100+1 - 10009)%44100];
     return_value += 0.1f*m->reverb_buffer[(m->reverb_buffer_tracker+44100+1 - 13997)%44100];

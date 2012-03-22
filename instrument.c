@@ -56,7 +56,7 @@ float instrument_render(Instrument* in, int time){
             }
         }
 
-        out += adsr_modifier*in->voices[i].volume*( /*0.5f*osc_sin(in->voices[i].pitch+in->pitch_bend-12,time)+0.5f**/(osc_sin(in->voices[i].pitch+in->pitch_bend, time) /*+ 0.02f*osc_sin(in->voices[i].pitch+in->pitch_bend+10,time)*/)   );
+        out += adsr_modifier*in->voices[i].volume*( /*0.5f*osc_sin(in->voices[i].pitch+in->pitch_bend-12,time)+0.5f**/(osc_tri(in->voices[i].pitch+in->pitch_bend, time) /*+ 0.02f*osc_sin(in->voices[i].pitch+in->pitch_bend+10,time)*/)   );
 
     }
 
