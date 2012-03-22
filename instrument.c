@@ -11,6 +11,9 @@ Instrument* create_instrument(){
     instrument->sustain = 0.7f;
     instrument->release = 5000;
     instrument->pitch_bend = 0.f;
+    instrument->LFO_freq = -5;
+    instrument->LFO_type = LFO_SIN;
+    instrument->LFO_value = 0;
     instrument->LP_coeff[0] = 0.5f;
     instrument->LP_coeff[1] = 0.3f;
     instrument->LP_coeff[2] = 0.8f;
@@ -28,6 +31,23 @@ Instrument* create_instrument(){
 float instrument_render(Instrument* in, int time){
 
     float out = 0;
+
+    switch(in->LFO_type){
+        case LFO_SIN:
+            in->LFO_value = osc_sin(in->LFO_freq, time);
+            break;
+        case LFO_SQU:
+            in->LFO_value = osc_squ(in->LFO_freq, time);
+            break;
+        case LFO_SAW:
+            in->LFO_value = osc_saw(in->LFO_freq, time);
+            break;
+        case LFO_TRI:
+            in->LFO_value = osc_tri(in->LFO_freq, time);
+            break;
+        default:
+            break;
+    }
 
     int i;
 
@@ -56,7 +76,7 @@ float instrument_render(Instrument* in, int time){
             }
         }
 
-        out += adsr_modifier*in->voices[i].volume*( /*0.5f*osc_sin(in->voices[i].pitch+in->pitch_bend-12,time)+0.5f**/(osc_tri(in->voices[i].pitch+in->pitch_bend, time) /*+ 0.02f*osc_sin(in->voices[i].pitch+in->pitch_bend+10,time)*/)   );
+        out += in->LFO_value*adsr_modifier*in->voices[i].volume*( /*0.5f*osc_sin(in->voices[i].pitch+in->pitch_bend-12,time)+0.5f**/(osc_tri(in->voices[i].pitch+in->pitch_bend, time) /*+ 0.02f*osc_sin(in->voices[i].pitch+in->pitch_bend+10,time)*/)   );
 
     }
 

@@ -3,6 +3,11 @@
 
 #define LP_SIZE 8
 
+#define LFO_SIN 0
+#define LFO_SQU 1
+#define LFO_SAW 2
+#define LFO_TRI 3
+
 #include "voice.h"
 
 
@@ -18,6 +23,10 @@ typedef struct{
     float sustain;
     int release;
     float pitch_bend;
+    float LFO_freq;
+    float LFO_value;
+    int LFO_type;
+    int t;
 } Instrument;
 
 Instrument* create_instrument();

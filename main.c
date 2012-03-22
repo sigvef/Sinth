@@ -77,7 +77,7 @@ int main(int argc, char**argv)
     if(argc == 2){
         player_load(p, argv[1]);
     }else{
-        player_load(p, "res/rabbit.mid");
+        player_load(p, "res/skyrim.mid");
     }
     sawer = create_instrument();
     mixer_add_instrument(m, sawer);
