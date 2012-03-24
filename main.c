@@ -84,10 +84,10 @@ int main(int argc, char**argv)
     mixer_add_instrument(m,create_instrument(OSC_SAW));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SILENCE));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
-    mixer_add_instrument(m,create_instrument(OSC_SAW));
-    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SILENCE));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
     mixer_add_instrument(m,create_instrument(OSC_SAW));

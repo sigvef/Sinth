@@ -124,6 +124,7 @@ void player_forward(Player* p){
                         instrument_note_off(p->m->instruments[midi_channel],note_number);
                     }else{
                         instrument_note_on(p->m->instruments[midi_channel],note_number,velocity);
+                printf("[Track %i] Note on! ch: %i pitch: %i\n", i,midi_channel, note_number);
                         }
                     break;
                 case 0xE: //pitch bend
@@ -168,7 +169,6 @@ void player_forward(Player* p){
                 break;
             }else{
                 tr->dt = track_read_next_vlf(tr);
-                //printf("[Track %i] Next dt: %i\n", i,tr->dt);
             }
         }
     }
