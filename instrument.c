@@ -1,7 +1,7 @@
 #include "instrument.h"
 #include "oscillators.h"
 
-Instrument* create_instrument(){
+Instrument* create_instrument(int oscillator_type){
     Instrument* instrument = (Instrument*) malloc(sizeof(Instrument));
     instrument->volume = 1;
     instrument->LP_buffer_tracker = 0;
@@ -17,6 +17,7 @@ Instrument* create_instrument(){
     instrument->LP_coeff[0] = 0.5f;
     instrument->LP_coeff[1] = 0.3f;
     instrument->LP_coeff[2] = 0.8f;
+    instrument->osc_type = oscillator_type;
     int i;
     for(i=0;i<16;i++){
         instrument->voices[i].on = 0;
@@ -76,7 +77,25 @@ float instrument_render(Instrument* in, int time){
             }
         }
 
-        out += in->LFO_value*adsr_modifier*in->voices[i].volume*( /*0.5f*osc_sin(in->voices[i].pitch+in->pitch_bend-12,time)+0.5f**/(osc_tri(in->voices[i].pitch+in->pitch_bend, time) /*+ 0.02f*osc_sin(in->voices[i].pitch+in->pitch_bend+10,time)*/)   );
+        float osc_value;
+        switch(in->osc_type){
+            case OSC_SIN:
+                osc_value = osc_sin(in->voices[i].pitch+in->pitch_bend, time);
+                break;
+            case OSC_SQU:
+                osc_value = osc_squ(in->voices[i].pitch+in->pitch_bend, time);
+                break;
+            case OSC_SAW:
+                osc_value = osc_saw(in->voices[i].pitch+in->pitch_bend, time);
+                break;
+            case OSC_TRI:
+                osc_value = osc_tri(in->voices[i].pitch+in->pitch_bend, time);
+                break;
+            default:
+                osc_value = 0;
+                break;
+        }
+        out += adsr_modifier*in->voices[i].volume*osc_value;
 
     }
 

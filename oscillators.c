@@ -1,7 +1,7 @@
 #include <math.h>
 
 float osc_sin(float pitch,int time){
-    return sin(time*M_PI/44100 *440*pow(2,(pitch-57-12)/12));
+    return sin(time*M_PI/44100 *440*pow(2,(pitch-57-12-24)/12));
 }
 
 float osc_squ(float pitch, int time){
@@ -9,12 +9,12 @@ float osc_squ(float pitch, int time){
 }
 
 float osc_saw(float pitch, int time){
-    int freq = 44100/(440*pow(2,(pitch-57-12)/12));
+    int freq = 44100/(440*pow(2,(pitch-57-12-24)/12));
     return (time%freq) / (float)(freq) -0.5;
 }
 
 float osc_tri(float pitch, int time){
-    int freq = 44100.f/(440*pow(2,(pitch-57-12)/12));
+    int freq = 44100.f/(440*pow(2,(pitch-57-12-24)/12));
     if(!freq) freq=1;
     float v = time%freq;
     v = 4*v/freq;

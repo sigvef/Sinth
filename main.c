@@ -11,7 +11,6 @@
 SDL_Event event;
 Mixer* m;
 Player* p;
-Instrument* sawer;
 long t = 0;
 
 int ticker = 0;
@@ -77,26 +76,25 @@ int main(int argc, char**argv)
     if(argc == 2){
         player_load(p, argv[1]);
     }else{
-        player_load(p, "res/skyrim.mid");
+        player_load(p, "res/guardia_forest.mid");
     }
-    sawer = create_instrument();
-    mixer_add_instrument(m, sawer);
-    mixer_add_instrument(m,create_instrument());
-    mixer_add_instrument(m,create_instrument());
-    mixer_add_instrument(m,create_instrument());
-    mixer_add_instrument(m,create_instrument());
-    mixer_add_instrument(m,create_instrument());
-    mixer_add_instrument(m,create_instrument());
-    mixer_add_instrument(m,create_instrument());
-    mixer_add_instrument(m,create_instrument());
-    mixer_add_instrument(m,create_instrument());
-    mixer_add_instrument(m,create_instrument());
-    mixer_add_instrument(m,create_instrument());
-    mixer_add_instrument(m,create_instrument());
-    mixer_add_instrument(m,create_instrument());
-    mixer_add_instrument(m,create_instrument());
-    mixer_add_instrument(m,create_instrument());
-    mixer_add_instrument(m,create_instrument());
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SIN));
 
     SDL_SetVideoMode( 640, 480, 32, SDL_SWSURFACE );
 	// Open the audio

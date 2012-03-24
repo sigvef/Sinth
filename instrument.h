@@ -26,10 +26,11 @@ typedef struct{
     float LFO_freq;
     float LFO_value;
     int LFO_type;
+    int osc_type;
     int t;
 } Instrument;
 
-Instrument* create_instrument();
+Instrument* create_instrument(int oscillator_type);
 
 float instrument_render(Instrument* in, int time);
 void instrument_note_on(Instrument* in, int pitch, float volume);
