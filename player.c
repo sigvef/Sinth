@@ -11,7 +11,25 @@ Player* create_player(){
     return player;
 }
 
+void _player_load_instruments(Player* p, const char* midi_filename){
+    FILE *f;
+    char instruments_filename[strlen(midi_filename)+6];
+    strcpy(instruments_filename, midi_filename);
+    strcat(instruments_filename, ".instr");
+
+    f = fopen(instruments_filename,"rt");
+    if(!f) return _player_load_instruments(p,"res/default");
+    char line[80];
+    while(fgets(line,80,f)){
+      printf("%s\n",line);  
+    }
+    fclose(f);
+    f=NULL;
+
+}
+
 void player_load(Player* p, const char* midi_filename){
+    _player_load_instruments(p,midi_filename);
     FILE *f;
     f = fopen(midi_filename,"rb");
     fseek(f, 0L, SEEK_END);
@@ -150,8 +168,7 @@ void player_forward(Player* p){
                 break;
             }else{
                 tr->dt = track_read_next_vlf(tr);
-                if(i==4)
-                printf("[Track %i] Next dt: %i\n", i,tr->dt);
+                //printf("[Track %i] Next dt: %i\n", i,tr->dt);
             }
         }
     }

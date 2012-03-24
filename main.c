@@ -78,25 +78,24 @@ int main(int argc, char**argv)
     }else{
         player_load(p, "res/1000ad-B.mid");
     }
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
-    mixer_add_instrument(m,create_instrument(OSC_SQU));
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
 
-    SDL_SetVideoMode( 640, 480, 32, SDL_SWSURFACE );
+    //SDL_SetVideoMode( 640, 480, 32, SDL_SWSURFACE );
 	// Open the audio
 	open_audio();
 	while(running){

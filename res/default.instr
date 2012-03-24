@@ -1,0 +1,7 @@
+#This is the default .instr-file for Sinth
+
+instr
+attack=20
+decay=40
+sustain=23
+release=35
