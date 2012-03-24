@@ -3,11 +3,11 @@
 #define TRACK_H
 
 typedef struct{
-    long dt;
-    long tracker;
-    long running_status;
+    long long dt;
+    unsigned long tracker;
+    unsigned long running_status;
     unsigned char *midi;
-    long track_length;
+    unsigned long track_length;
     short active;
 } Track;
 

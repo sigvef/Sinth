@@ -27,6 +27,7 @@ void player_load(Player* p, const char* midi_filename){
     //fclose(f);
     p->tracker = 10; //skip to number of tracks in the header
     p->number_of_tracks = player_read_next_word(p);
+    printf("Number of tracks: %i\n",p->number_of_tracks);
     int time_division = player_read_next_word(p);
     if(time_division & 0x8000){
         //time division is in frames per second
@@ -41,9 +42,11 @@ void player_load(Player* p, const char* midi_filename){
     int i;
     for(i=0;i<p->number_of_tracks;i++){
         long track_start = p->tracker;
+        printf("new track! track_start:                %i\n",track_start);
         player_read_next_dword(p);
         long track_length = player_read_next_dword(p);
-        printf("new track! length: %i\n",track_length);
+        printf("           length:                     %i\n",track_length);
+        printf("           next track should start at: %i\n\n",(track_length+track_start+8));
         p->tracks[i] = create_track(track_length);
         memcpy(
                p->tracks[i]->midi,
@@ -147,6 +150,8 @@ void player_forward(Player* p){
                 break;
             }else{
                 tr->dt = track_read_next_vlf(tr);
+                if(i==4)
+                printf("[Track %i] Next dt: %i\n", i,tr->dt);
             }
         }
     }
@@ -154,12 +159,15 @@ void player_forward(Player* p){
 }
 
 long player_read_next_vlf(Player* p){
-    long next = (unsigned char)p->midi[p->tracker++];
+    unsigned long vlf = 0;
+    unsigned long next = (unsigned char) p->midi[p->tracker++];
     while(next&0x80){
-        next <<= 8;
-        next |= (unsigned char)p->midi[p->tracker++];
+        next &= 0x7F;
+        vlf <<= 7;
+        vlf |= next;
+        next = (unsigned char) p->midi[p->tracker++];
     }
-    return next;
+    return (vlf<<7) | next;
 }
 
 long player_read_next_dword(Player* p){

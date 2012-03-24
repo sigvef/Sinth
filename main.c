@@ -76,11 +76,11 @@ int main(int argc, char**argv)
     if(argc == 2){
         player_load(p, argv[1]);
     }else{
-        player_load(p, "res/guardia_forest.mid");
+        player_load(p, "res/1000ad-B.mid");
     }
     mixer_add_instrument(m,create_instrument(OSC_SIN));
     mixer_add_instrument(m,create_instrument(OSC_SIN));
-    mixer_add_instrument(m,create_instrument(OSC_SIN));
+    mixer_add_instrument(m,create_instrument(OSC_SQU));
     mixer_add_instrument(m,create_instrument(OSC_SIN));
     mixer_add_instrument(m,create_instrument(OSC_SIN));
     mixer_add_instrument(m,create_instrument(OSC_SIN));

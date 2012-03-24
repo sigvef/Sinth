@@ -17,9 +17,20 @@ void track_rewind_one_byte(Track* tr){
 }
 
 unsigned long track_read_next_vlf(Track* tr){
+    // 81 fd 10
     if(tr->tracker >= tr->track_length){
         printf("GENERAL FAILURE! track_read_next_vlf\n");
     }
+    unsigned long vlf = 0;
+    unsigned long next = (unsigned char) tr->midi[tr->tracker++];
+    while(next&0x80){
+        next &= 0x7F;
+        vlf <<= 7;
+        vlf |= next;
+        next = (unsigned char) tr->midi[tr->tracker++];
+    }
+    return (vlf<<7) | next;
+    /*
     long next = (unsigned char)tr->midi[tr->tracker++];
     long n = next;
     while(n&0x80){
@@ -29,11 +40,12 @@ unsigned long track_read_next_vlf(Track* tr){
             printf("GENERAL FAILURE! track_read_next_vlf (inside)\n");
         }
         n = (unsigned char)tr->midi[tr->tracker++];
-        next |= n;
+        next |= (n&0x7F);
 
     }
-    return next;
+    */
 }
+
 
 unsigned long track_read_next_dword(Track* tr){
     if(tr->tracker+3 >= tr->track_length){
