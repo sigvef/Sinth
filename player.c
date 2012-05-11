@@ -1,13 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "player.h"
+#include "mixer.h"
+#include "instrument.h"
+#include "oscillators.h"
 #include "track.h"
 
-Player* create_player(){
+Player* create_player(Mixer* mixer){
     Player* player = (Player*) malloc(sizeof(Player));
     player->tracker = 0;
     player->ticks_per_second = 0;
     player->ticks_per_beat = 0;
+    player->m = mixer;
     return player;
 }
 
@@ -21,7 +26,21 @@ void _player_load_instruments(Player* p, const char* midi_filename){
     if(!f) return _player_load_instruments(p,"res/default");
     char line[80];
     while(fgets(line,80,f)){
-      printf("%s\n",line);  
+      printf("%s",line);  
+      if(strcmp(line,"instr\n")==0){
+          fgets(line,80,f);
+          char *tmp = strchr(line,'\n');
+          *tmp = '\0';
+          Instrument* in = create_instrument(line);
+          while(fgets(line,80,f)){
+              printf("%s",line);  
+              if(strcmp(line,"\n")==0){
+                  mixer_add_instrument(p->m,in); 
+                  break;
+              }
+          }
+
+      }
     }
     fclose(f);
     f=NULL;
@@ -60,11 +79,11 @@ void player_load(Player* p, const char* midi_filename){
     int i;
     for(i=0;i<p->number_of_tracks;i++){
         long track_start = p->tracker;
-        printf("new track! track_start:                %i\n",track_start);
+        //printf("new track! track_start:                %i\n",track_start);
         player_read_next_dword(p);
         long track_length = player_read_next_dword(p);
-        printf("           length:                     %i\n",track_length);
-        printf("           next track should start at: %i\n\n",(track_length+track_start+8));
+        //printf("           length:                     %i\n",track_length);
+        //printf("           next track should start at: %i\n\n",(track_length+track_start+8));
         p->tracks[i] = create_track(track_length);
         memcpy(
                p->tracks[i]->midi,
@@ -124,7 +143,7 @@ void player_forward(Player* p){
                         instrument_note_off(p->m->instruments[midi_channel],note_number);
                     }else{
                         instrument_note_on(p->m->instruments[midi_channel],note_number,velocity);
-                printf("[Track %i] Note on! ch: %i pitch: %i\n", i,midi_channel, note_number);
+                //printf("[Track %i] Note on! ch: %i pitch: %i\n", i,midi_channel, note_number);
                         }
                     break;
                 case 0xE: //pitch bend

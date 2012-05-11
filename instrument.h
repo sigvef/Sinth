@@ -8,10 +8,12 @@
 #define LFO_SAW 2
 #define LFO_TRI 3
 
+#include "sample.h"
 #include "voice.h"
 
 
 typedef struct{
+    Sample* sample;
     float volume;
     Voice voices[16];
     float LP_buffer[LP_SIZE];
@@ -30,10 +32,11 @@ typedef struct{
     int t;
 } Instrument;
 
-Instrument* create_instrument(int oscillator_type);
+Instrument* create_instrument(const char* sample_filename);
 
 float instrument_render(Instrument* in, int time);
-void instrument_note_on(Instrument* in, int pitch, float volume);
+void instrument_note_on(Instrument* in, int pitch, int volume);
+void instrument_note_off(Instrument* in, int pitch);
 void instrument_deactivate_voice(Instrument* p, int index);
 
 #endif

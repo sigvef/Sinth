@@ -27,8 +27,6 @@ void fill_audio(void *data,Uint8 *stream,int len)
 	buff = (short*)stream;
 	len /= 2; //Because we're now using shorts
 	//Noise
-    short temp;
-    float pitch = 56;
 
 
 	for(i = 0;i < len;i+=2){
@@ -71,29 +69,30 @@ int main(int argc, char**argv)
     int running = 1;
 
     m = create_mixer();
-    p = create_player();
-    p->m = m;
+    p = create_player(m);
     if(argc == 2){
         player_load(p, argv[1]);
     }else{
-        player_load(p, "res/1000ad-B.mid");
+        player_load(p, "res/silent_light.mid");
     }
+    /*
+    mixer_add_instrument(m,create_instrument(OSC_SQU));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
-    mixer_add_instrument(m,create_instrument(OSC_SILENCE));
-    mixer_add_instrument(m,create_instrument(OSC_SAW));
-    mixer_add_instrument(m,create_instrument(OSC_SAW));
-    mixer_add_instrument(m,create_instrument(OSC_SILENCE));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
     mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    mixer_add_instrument(m,create_instrument(OSC_SAW));
+    */
 
     //SDL_SetVideoMode( 640, 480, 32, SDL_SWSURFACE );
 	// Open the audio

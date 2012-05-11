@@ -8,6 +8,7 @@
 #define OSC_NOISE 4
 #define OSC_SILENCE 5
 
+float sine(float x);
 float osc_sin(float pitch, int time);
 float osc_squ(float pitch, int time);
 float osc_saw(float pitch, int time);

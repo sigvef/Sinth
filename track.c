@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <stdio.h>
 #include "track.h"
 
 Track* create_track(long track_length){

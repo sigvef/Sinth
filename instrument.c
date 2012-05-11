@@ -1,15 +1,19 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "sample.h"
 #include "instrument.h"
 #include "oscillators.h"
 
-Instrument* create_instrument(int oscillator_type){
+Instrument* create_instrument(const char*sample_filename){
     Instrument* instrument = (Instrument*) malloc(sizeof(Instrument));
     instrument->volume = 1;
     instrument->LP_buffer_tracker = 0;
     instrument->active_voices = 0;
-    instrument->attack = 100;
+    instrument->attack = 0;
     instrument->decay = 20000;
     instrument->sustain = 0.7f;
-    instrument->release = 5000;
+    instrument->release = 0;
     instrument->pitch_bend = 0.f;
     instrument->LFO_freq = -5;
     instrument->LFO_type = LFO_SIN;
@@ -17,7 +21,8 @@ Instrument* create_instrument(int oscillator_type){
     instrument->LP_coeff[0] = 0.5f;
     instrument->LP_coeff[1] = 0.3f;
     instrument->LP_coeff[2] = 0.8f;
-    instrument->osc_type = oscillator_type;
+    //instrument->osc_type = oscillator_type;
+    instrument->sample = load_sample(sample_filename);
     int i;
     for(i=0;i<16;i++){
         instrument->voices[i].on = 0;
@@ -53,68 +58,24 @@ float instrument_render(Instrument* in, int time){
     int i;
 
     for(i=0;i<in->active_voices;i++){
-        float adsr_modifier = 0.f;
-
-        if(in->voices[i].on){
-            if(in->voices[i].tracker <= in->attack){
-                in->voices[i].adsr_modifier = (float)(in->voices[i].tracker)/in->attack;
-                in->voices[i].tracker++;
-            }
-            else if(in->voices[i].tracker <= in->attack + in->decay){
-                in->voices[i].adsr_modifier = 1 - (float)((1-in->sustain)*(in->voices[i].tracker - in->attack))/in->decay;
-                in->voices[i].tracker++;
-            }else{
-                in->voices[i].adsr_modifier = in->sustain;
-            }
-            adsr_modifier = in->voices[i].adsr_modifier;
-        } else{
-            adsr_modifier = in->voices[i].adsr_modifier * (1-(float)(in->voices[i].tracker)/in->release);
-            in->voices[i].tracker++;
-
-            if(adsr_modifier <= 0){
-                instrument_deactivate_voice(in,i);
-                i--;continue;
-            }
+        if(!in->voices[i].on){
+            instrument_deactivate_voice(in,i);
+            i--;continue;
         }
-
+        in->voices[i].tracker++;
         float osc_value;
-        switch(in->osc_type){
-            case OSC_SIN:
-                osc_value = osc_sin(in->voices[i].pitch+in->pitch_bend, time);
-                break;
-            case OSC_SQU:
-                osc_value = osc_squ(in->voices[i].pitch+in->pitch_bend, time);
-                break;
-            case OSC_SAW:
-                osc_value = osc_saw(in->voices[i].pitch+in->pitch_bend, time);
-                break;
-            case OSC_TRI:
-                osc_value = osc_tri(in->voices[i].pitch+in->pitch_bend, time);
-                break;
-            default:
-                osc_value = 0;
-                break;
-        }
-        out += adsr_modifier*in->voices[i].volume*osc_value;
+            osc_value = sample_render(in->sample,in->voices[i].pitch+in->pitch_bend, in->voices[i].tracker);
+        out += in->voices[i].volume*osc_value;
 
     }
 
-    in->LP_buffer[in->LP_buffer_tracker] = out;
-    float y = 0;
-    int k;
-    for(k=0;k<LP_SIZE;k++){
-        y += in->LP_coeff[k] * in->LP_buffer[(in->LP_buffer_tracker+k)%LP_SIZE];
-    }
-    in->LP_buffer_tracker = (in->LP_buffer_tracker+1)%LP_SIZE;
-
-
-    return out;
+    return in->volume*out;
 }
 
-void instrument_note_on(Instrument* in, int pitch, float volume){
+void instrument_note_on(Instrument* in, int pitch, int volume){
     if(in->active_voices < 16){
         in->voices[in->active_voices].pitch = pitch;
-        in->voices[in->active_voices].volume = volume/128.f;
+        in->voices[in->active_voices].volume = volume/512.f;
         in->voices[in->active_voices].on = 1;
         in->voices[in->active_voices].active = 1;
         in->voices[in->active_voices].tracker = 0;
